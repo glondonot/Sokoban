@@ -259,7 +259,7 @@ class Tablero{
       if(caja2.coordY==caja.coordY+1 && caja2.coordX==caja.coordX && p == 'ab'){
         return caja.moveAbajo = false
       }
-      if(caja2.coordY==caja.coordY-1 && caja2.coordX==caja.coordX && p == ''){
+      if(caja2.coordY==caja.coordY-1 && caja2.coordX==caja.coordX && p == 'ar'){
         return caja.moveArriba = false
       }
     } 
