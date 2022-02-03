@@ -1,3 +1,4 @@
+//-----seccion encarga de iniciarlizar variables-----
 let h , player , caja , cajas = [] , nivel = 1
 
 function preload() {
