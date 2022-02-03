@@ -1,4 +1,4 @@
-let h , player , caja , cajas = [] , nivel = 9
+let h , player , caja , cajas = [] , nivel = 1
 
 function preload() {
   ImagenPlayer_right = loadImage("assets/Player_right.png");
