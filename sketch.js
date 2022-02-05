@@ -1,5 +1,5 @@
 //-----seccion encarga de iniciarlizar variables de juego-----
-let h , player , caja , cajas = [] , nivel = 1
+let h , player , caja , cajas = [] , nivel = 1, menu=true, instrucciones=false, niveles=false;
 
 //-----seccion encarga de cargar los sprites del juego-----
 function preload() {
@@ -8,6 +8,7 @@ function preload() {
   ImagenBox = loadImage("assets/Box.png");
   ImagenWall = loadImage("assets/Wall.png");
   ImagenStorage = loadImage("assets/Storage.png");
+  MenuWallpaper=loadImage("assets/hero.jpg");
 }
 
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
@@ -18,7 +19,76 @@ function setup() {
   almacen = new Almacen
   //llama la funcion mapa y segun el mapa este es construido
   Construir(mapas())
+  // creación botones menu 
+  boton_jugar = createButton('Jugar'); 
+  boton_jugar.position(450,370);
+  boton_jugar.style('background-color', '#329F5B');
+  boton_jugar.mousePressed(iniciar_juego_en_0);
+
+
+  boton_instrucciones=createButton("Instrucciones");
+  boton_instrucciones.position(450,430);
+  boton_instrucciones.mousePressed(iniciar_instrucciones);
+
+  boton_niveles=createButton("niveles");
+  boton_niveles.position(450,480);
+  boton_niveles.mousePressed(menu_niveles);
+
+
+  // Estos son los botones que me generan problemas
+
+  // seleccion_nivel=createInput("");
+  // seleccion_nivel.position(0,0);
+  // seleccion_nivel.size(100);
+  // nivel_escogido=seleccion_nivel.input(usuario_selecciona_nivel,Number);
+  // // nivel_escogido=parseInt(nivel_escogido,10);
+
+
+  // boton_nivel_escogido=createButton("Seleccionar");
+  // boton_nivel_escogido.position(400,550);
+  // boton_nivel_escogido.mousePressed(iniciar_nivel_escogido);
 }
+
+// funciones de los botones:
+function iniciar_juego_en_0(){
+  menu=!menu;
+  nivel=1;
+  boton_jugar.hide();
+  boton_instrucciones.hide();
+  boton_niveles.hide();
+  console.log(menu)
+  setup();
+}
+
+function iniciar_instrucciones(){
+  instrucciones=!instrucciones;
+  menu=false;
+  console.log(instrucciones);
+}
+
+function menu_niveles(){
+  menu=false;
+  niveles=!niveles;
+  console.log(niveles);
+}
+
+// Estas son las funciones de los botones que generan problemas
+
+// function usuario_selecciona_nivel(){
+//   nivel_escogido=this.value();
+//   return nivel_escogido;
+// }
+
+// function iniciar_nivel_escogido(nivel_seleccionado){
+//   nivel=nivel_seleccionado;
+//   boton_jugar.hide();
+//   boton_instrucciones.hide();
+//   boton_niveles.hide();
+//   boton_nivel_escogido.hide();
+//   setup();
+
+// }
+
 
 //-----se encarga de representar el mapa y crear los objetos en este-----
 function Construir(map){
@@ -64,15 +134,63 @@ function ncajas(){
 
 //-----seccion encarga de dibujar objetos del juego-----
 function draw() {
-  background(220);
-  almacen.victoria()
-  player.draw()
-  player.limite()
-  ncajas()
-  board.draw()
-  almacen.draw()
-  board.limitetablero('player')
+  if(menu==true && instrucciones==false){
+    createCanvas(750,650);
+    background("white");
+    image(MenuWallpaper,0,0,750,650);
+    boton_jugar.show();
+    boton_instrucciones.show();
+    boton_niveles.show();
+    // seleccion_nivel.hide()
+    // boton_nivel_escogido.hide();
+  }
+  else if(instrucciones==true && menu==false){
+    createCanvas(750,650);
+    background("white");
+    text('Aquí van las instrucciones',0,0);
+    boton_jugar.hide();
+    boton_instrucciones.hide();
+    boton_niveles.hide();
+  }
+
+  else if(menu==false && instrucciones==false && niveles==true ){
+    createCanvas(750,650);
+    background("gray");
+    boton_jugar.hide();
+    boton_instrucciones.hide();
+    boton_niveles.hide();
+    seleccion_nivel.show()
+    boton_nivel_escogido.show();
+  }
+
+ 
+  else{
+    background(220);
+    almacen.victoria()
+    player.draw()
+    player.limite()
+    ncajas()
+    board.draw()
+    almacen.draw()
+    board.limitetablero('player')
+    boton_jugar.hide();
+    boton_instrucciones.hide();
+    boton_niveles.hide();
+    // seleccion_nivel.hide()
+    // boton_nivel_escogido.hide();
+  }
 }
+
+// function draw() {
+//   background(220);
+//   almacen.victoria()
+//   player.draw()
+//   player.limite()
+//   ncajas()
+//   board.draw()
+//   almacen.draw()
+//   board.limitetablero('player')
+// }
 
 //-----Clase tablero representa la posicion de las paredes y las coliciones con estos-----
 class Tablero{
@@ -377,5 +495,10 @@ function keyPressed(){
   }
   if (keyCode == 77){
     almacen.victory = true
+  }
+  if (keyCode== 27){
+    menu=true;
+    instrucciones=false;
+    niveles=false;
   }
 }
