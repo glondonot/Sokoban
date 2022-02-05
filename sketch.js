@@ -1,5 +1,8 @@
 //-----seccion encarga de iniciarlizar variables de juego-----
 let h , player , caja , cajas = [] , nivel = 1
+let jugando = false;
+let niveles = false;
+let informacion = false;
 
 //-----seccion encarga de cargar los sprites del juego-----
 function preload() {
@@ -8,6 +11,47 @@ function preload() {
   ImagenBox = loadImage("assets/Box.png");
   ImagenWall = loadImage("assets/Wall.png");
   ImagenStorage = loadImage("assets/Storage.png");
+}
+//crea el menu que actua como una ventana emergente.
+Swal.fire({
+  title: 'Sokoban!',
+  showDenyButton: true,
+  showCancelButton: true,
+  allowOutsideClick: false,
+  confirmButtonText: 'Jugar',
+  denyButtonText: `Selector de niveles`,
+  denyButtonColor: '#1C6DD0',
+  cancelButtonText: 'Sobre nosotros',
+  cancelButtonColor: '#A3E4DB',
+  backdrop: "#B983FF",
+  background:"#94B3FD",
+  imageUrl: 'assets/inicio.png',
+  imageWidth: 400,
+  imageHeight: 400,
+  imageAlt: 'Custom image',
+  //esta parte se encarga de mostrar los botones y sus resultados
+}).then((result) => {
+  if (result.isConfirmed) {
+    Swal.fire('Sobokan es un juego en el que debes poner las cajas encima de las marcas. \n ¡una vez hecho pasaras al siguiente nivel! \n ten cuidado, si haces movimientos equivocados puedes terminar atascando las cajas y la unica manera de continuar es reiniciar el nivel. \n ¡buena suerte!', '', 'info')
+    iniciar();
+  } 
+  if (result.isDenied) {
+    Swal.fire('Changes are not saved', '', 'info')
+    niveles();
+  }
+  if (result.isDismissed) {
+    informacionimportante();
+    }
+})
+//estas funciones retornan un valor positivo para hacer referencia que es la secccion activa
+function iniciar(){
+  return jugando=true;
+}
+function elegirnivel(){
+  return niveles=true;
+}
+function informacionimportante(){
+  return informacion=true;
 }
 
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
@@ -64,16 +108,38 @@ function ncajas(){
 
 //-----seccion encarga de dibujar objetos del juego-----
 function draw() {
-  background(220);
-  almacen.victoria()
-  player.draw()
-  player.limite()
-  ncajas()
-  board.draw()
-  almacen.draw()
-  board.limitetablero('player')
+  //si el boton jugar es seleccionado se ejecuta esta parte de aca
+  if (jugando==true){
+    background(220);
+    almacen.victoria()
+    player.draw()
+    player.limite()
+    ncajas()
+    board.draw()
+    almacen.draw()
+    board.limitetablero('player')
+  }
+  //si el boton niveles es seleccionado se ehecuta esta parte de aca
+  if (niveles==true){
+    background(500);
+  }
+  //si el boton informacion es seleccionado se ejecuta esta parte de aca.
+  if (informacion==true){
+    background('#1e243b');
+    aboutus = createImg("assets/fondo.png",'sobre nosotros');
+    aboutus.position(0,0);
+    aboutus.size(windowWidth,windowHeight);
+    //crea un boton que se devuelve al menu (recargando la pagina)
+    button = createButton('regresar al menu principal');
+    button.position(0, windowHeight/1.1);
+    button.center("horizontal");
+    button.mousePressed(recargarpagina);
+  }
 }
-
+//funcion que recarga la pagina
+function recargarpagina(){
+  location.reload();
+}
 //-----Clase tablero representa la posicion de las paredes y las coliciones con estos-----
 class Tablero{
   constructor(){
