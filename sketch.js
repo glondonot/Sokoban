@@ -1,6 +1,7 @@
-//-----seccion encarga de iniciarlizar variables-----
+//-----seccion encarga de iniciarlizar variables de juego-----
 let h , player , caja , cajas = [] , nivel = 1
 
+//-----seccion encarga de cargar los sprites del juego-----
 function preload() {
   ImagenPlayer_right = loadImage("assets/Player_right.png");
   ImagenPlayer_left = loadImage("assets/Player_left.png");
@@ -9,181 +10,51 @@ function preload() {
   ImagenStorage = loadImage("assets/Storage.png");
 }
 
+//-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
 function setup() {
   h = windowHeight/10
   createCanvas(windowHeight, windowHeight)
   board = new Tablero
   almacen = new Almacen
+  //llama la funcion mapa y segun el mapa este es construido
   Construir(mapas())
 }
 
-function mapas(){
-  cajas = []
-  if(nivel==1){
-    console.log('Primer nivel')
-    let map1 = ['##########',
-               '##########',
-               '###0000###',
-               '###&0!0###',
-               '##00@00###',
-               '##0&#!0###',
-               '##00######',
-               '##########',
-               '##########',
-               '##########']
-    return map1}
-  if(nivel==2){
-    console.log('Segundo nivel')
-    let map2 = ['##########',
-               '##########',
-               '###!0#####',
-               '###!0#####',
-               '###@&00###',
-               '###0&00###',
-               '###00#####',
-               '##########',
-               '##########',
-               '##########']
-    return map2}
-  if(nivel==3){
-    console.log('Tercer nivel')
-    let map1 = ['##########',
-               '##########',
-               '###00#####',
-               '###0@#####',
-               '###!&#####',
-               '###0000###',
-               '###!&#0###',
-               '####000###',
-               '##########',
-               '##########']
-    return map1}
-  if(nivel==4){
-    let map1 = ['##########',
-               '##########',
-               '####00####',
-               '####&!@0##',
-               '##000#00##',
-               '##00&!0###',
-               '##00#00###',
-               '#####00###',
-               '##########',
-               '##########']
-    return map1}
-  if(nivel==5){
-    let map1 = ['##########',
-               '##########',
-               '##000#00##',
-               '##00!000##',
-               '###&##00##',
-               '##0@!#00##',
-               '##0&0000##',
-               '######00##',
-               '##########',
-               '##########']
-    return map1}
-
-  if(nivel==6){
-    let map1 = ['##########',
-               '##########',
-               '####00####',
-               '####&!00##',
-               '##0&00#0##',
-               '##0!0@#0##',
-               '###0###0##',
-               '###00000##',
-               '##########',
-               '##########']
-  return map1}
-  if(nivel==7){
-    console.log('Primer nivel')
-    let map1 = ['##########',
-               '##########',
-               '##!000&0##',
-               '##!&00#0##',
-               '##!#0#00##',
-               '####0#0###',
-               '###0&00###',
-               '###@0#####',
-               '##########',
-               '##########']
-    return map1}
-  if(nivel==8){
-    h = windowHeight/11
-    console.log('Primer nivel')
-    let map1 = ['###########',
-               '###########',
-               '##000######',
-               '##0&0#000##',
-               '##000#&#0##',
-               '####&0000##',
-               '###000#####',
-               '###0@!!!###',
-               '###########',
-               '###########',
-               '###########']
-    return map1}
-  if(nivel==9){
-    console.log('Primer nivel')
-    let map1 =['##########',
-               '##########',
-               '###00000##',
-               '###0!&!0##',
-               '###0&@&0##',
-               '##00!&!0##',
-               '##000000##',
-               '##########',
-               '##########',
-               '##########']
-  return map1}
-  if(nivel==10){
-    h = windowHeight/11
-    console.log('Primer nivel')
-    let map1 =['###########',
-               '#00########',
-               '#00!0##0!##',
-               '#0&#0000!##',
-               '##0##0#0!##',
-               '##0000#00##',
-               '#####0#00##',
-               '###0@&0####',
-               '###0&&0####',
-               '###0000####',
-               '###########']
-    return map1}
-}
-
+//-----se encarga de representar el mapa y crear los objetos en este-----
 function Construir(map){
   let c = 0
   for(let i = 0 ; i<map.length ; i++){
     for(let j = 0 ; j<map[i].length ; j++){
+      //-----Si en la posicion indicada del mapa se encuentra # crea pared-----
       if(map[i][j]=='#'){
         append(board.wallX,j)
         append(board.wallY,i)
       }
-
+      //-----Si en la posicion indicada del mapa se encuentra ! crea almacenaje-----
       if(map[i][j]=='!'){
         append(almacen.storageX,j)
         append(almacen.storageY,i)
       }
-
+      //-----Si en la posicion indicada del mapa se encuentra @ crea objeto personaje-----   
       if(map[i][j]=='@'){
         player = new Jugador(j,i)
       }
-
+      //-----Si en la posicion indicada del mapa se encuentra & crea objeto caja-----
       if(map[i][j]=='&'){
         eval('caja' + c + '= ' + 'new ' + 'Caja(j,i)')
+        //se crean todos los objetos 'caja' y se almacena en lista 'cajas'
         append(cajas,eval('caja' + c))
         c += 1
       }
     }
   }
 }
-
+//-----Segun la cantidad de cajas, estas son dibujadas-----
 function ncajas(){
   for(let i = 0 ; i<cajas.length ; i++){
     eval('cajas' + '['+i+']' + '.' + 'draw()')
   }
+  //Se crea la condicion de victoria segun cada nivel y pasa al siguiente
   if(almacen.victory == true){
     console.log('ya ganaste wapo')
     nivel = nivel + 1
@@ -191,6 +62,7 @@ function ncajas(){
   }
 }
 
+//-----seccion encarga de dibujar objetos del juego-----
 function draw() {
   background(220);
   almacen.victoria()
@@ -200,21 +72,21 @@ function draw() {
   board.draw()
   almacen.draw()
   board.limitetablero('player')
-  //image(ImagenStorage, h*2, h, h, h)
 }
 
+//-----Clase tablero representa la posicion de las paredes y las coliciones con estos-----
 class Tablero{
   constructor(){
     this.wallX = []
     this.wallY = []
   }
-
+  //dibuja cada bloque de pared
   draw(){
     for(let i = 0 ; i<this.wallX.length ; i++){
       image(ImagenWall, h*this.wallX[i], h*this.wallY[i], h, h)
     }
   }
-
+  //verifica las coliciones jugador-pared y caja-pared
   limitetablero(objeto){
     if(objeto == 'player'){
       eval('objeto'+' = '+'player')  
@@ -242,6 +114,7 @@ class Tablero{
     }
   }
 
+  //verifica las coliciones entre las cajas
   limiteCaja(caja,p){
     let caja2
     for(let j = 0 ; j<cajas.length; j++){
@@ -260,13 +133,14 @@ class Tablero{
       if(caja2.coordY==caja.coordY+1 && caja2.coordX==caja.coordX && p == 'ab'){
         return caja.moveAbajo = false
       }
-      if(caja2.coordY==caja.coordY-1 && caja2.coordX==caja.coordX && p == ''){
+      if(caja2.coordY==caja.coordY-1 && caja2.coordX==caja.coordX && p == 'ar'){
         return caja.moveArriba = false
       }
     } 
   }
 }
 
+//-----Clase jugador representa la posicion de jugador, movimiento de este y colicion con cajas-----
 class Jugador{
   constructor(posInicialX,posInicialY){
     this.direccion = ''
@@ -279,7 +153,7 @@ class Jugador{
     this.moveArriba = true
     this.moveAbajo = true
   }
-
+  //dibuja al jugador segun la direccion que se encuentra
   draw(){
     if(this.direccion =='l'){
       image(ImagenPlayer_left, this.moveX, this.moveY, h, h)
@@ -294,7 +168,7 @@ class Jugador{
       
     }
   }
-
+  //Maneja las coliciones del jugador, verificando si estas existen y permitiendo el movimiento del jugador
   limite(p){
     for(let i = 0 ; i<cajas.length ; i++){
       eval('caja'+' = '+'cajas[i]') 
@@ -359,7 +233,7 @@ class Jugador{
     }
     
   }
-
+  //Si es permitido, el jugador se mueve a  la derecha
   movDerecha(){
     player.limite('d')
     if(player.moveDer == false){
@@ -369,9 +243,8 @@ class Jugador{
       this.moveX = this.moveX + h
       this.coordX = round(this.moveX/h)}
     this.direccion = 'd'
-    this.draw()
   }
-
+  //Si es permitido, el jugador se mueve a  la izquierda
   movIzqrda(){
     player.limite('i')
     if(this.moveIzq == false){
@@ -380,9 +253,8 @@ class Jugador{
     else{this.moveX = this.moveX - h
       this.coordX = round(this.moveX/h)}
     this.direccion = 'l'
-    this.draw()
   }
-
+  //Si es permitido, el jugador se mueve abajo
   movAbajo(){
     player.limite('ab')
     if(this.moveAbajo == false){
@@ -390,9 +262,8 @@ class Jugador{
     }
     else{this.moveY =  this.moveY + h
       this.coordY = round(this.moveY/h)}
-      this.draw()
   }
-
+  //Si es permitido, el jugador se mueve arriba
   movArriba(){
     player.limite('ar')
     if(this.moveArriba == false){
@@ -400,11 +271,11 @@ class Jugador{
     }
     else{this.moveY =  this.moveY - h
       this.coordY = round(this.moveY/h)}
-      this.draw()
   }
 
 }
 
+//-----Clase caja representa la posicion de cada objeto caja y movimiento de este objeto-----
 class Caja{
   constructor(posInicialX,posInicialY){
     this.moveX = posInicialX*h;
@@ -416,11 +287,11 @@ class Caja{
     this.moveArriba = true
     this.moveAbajo = true
   }
-
+  //dibuja cada caja segun su posicion
   draw(){
     image(ImagenBox, this.moveX, this.moveY, h, h)  
   }
-
+  //-----Seccion se encarga del movimiento de la caja, igual al del jugador-----
   movDerecha(){
     if(this.moveDer == false){
       //Do nothing
@@ -429,7 +300,6 @@ class Caja{
       this.moveX = this.moveX + h
       this.coordX = round(this.moveX/h)}
     this.direccion = 'd'
-    this.draw()
   }
 
   movIzqrda(){
@@ -439,7 +309,6 @@ class Caja{
     else{this.moveX = this.moveX - h
       this.coordX = round(this.moveX/h)}
     this.direccion = 'l'
-    this.draw()
   }
 
   movAbajo(){
@@ -448,7 +317,6 @@ class Caja{
     }
     else{this.moveY =  this.moveY + h
       this.coordY = round(this.moveY/h)}
-      this.draw()
   }
 
   movArriba(){
@@ -457,10 +325,9 @@ class Caja{
     }
     else{this.moveY =  this.moveY - h
       this.coordY = round(this.moveY/h)}
-      this.draw()
   }
 }
-
+//-----Clase almacen representa la posicion de cada almacenaje y si estos se encuentran ocupados-----
 class Almacen{
   constructor(){
     this.storageX = []
@@ -473,7 +340,7 @@ class Almacen{
       image(ImagenStorage, h*this.storageX[i], h*this.storageY[i], h, h)
     }
   }
-
+  //verifica la condicion de victoria si todos los almacenajes se encuentran ocupados por cajas
   victoria(){
     let vic = 0
     for(let i = 0 ; i<cajas.length ; i++){
@@ -491,34 +358,24 @@ class Almacen{
   }
 }
 
-function pruebas(){
-  let n = 3
-  for(let i = 0 ; i<5 ; i++){
-    if(i!=n){
-      console.log(i)
-    }
-    
-  }
-}
-
+//-----Funcion se encarga del movimiento del personaje con las teclas-----
 function keyPressed(){
   if (keyCode == UP_ARROW){
-    console.log('arriba');
     player.movArriba()
   }
   if (keyCode == DOWN_ARROW){
-    console.log('abajo');
     player.movAbajo()
   }
   if (keyCode == LEFT_ARROW){
-    console.log('izquierda');
     player.movIzqrda()
   }
   if (keyCode == RIGHT_ARROW){
-    console.log('derecha');
-    player.movDerecha();
+    player.movDerecha()
   }
   if (keyCode == 32){
     setup()
+  }
+  if (keyCode == 77){
+    almacen.victory = true
   }
 }
