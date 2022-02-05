@@ -1,6 +1,8 @@
 //-----seccion encarga de iniciarlizar variables de juego-----
 let h , player , caja , cajas = [] , nivel = 1, menu=true, instrucciones=false, niveles=false;
 
+// HOLA ESTOY PROBANDO ALGO EN GIT HUB POR FAVOR IGNORAR POR COMPLETO ESTE COMMIT
+
 //-----seccion encarga de cargar los sprites del juego-----
 function preload() {
   ImagenPlayer_right = loadImage("assets/Player_right.png");
