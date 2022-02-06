@@ -37,7 +37,7 @@ Swal.fire({
   } 
   if (result.isDenied) {
     Swal.fire('Changes are not saved', '', 'info')
-    niveles();
+    elegirnivel();
   }
   if (result.isDismissed) {
     informacionimportante();
@@ -121,7 +121,7 @@ function draw() {
   }
   //si el boton niveles es seleccionado se ehecuta esta parte de aca
   if (niveles==true){
-    background(500);
+    background(50);
   }
   //si el boton informacion es seleccionado se ejecuta esta parte de aca.
   if (informacion==true){
