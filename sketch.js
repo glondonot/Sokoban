@@ -1,16 +1,15 @@
 //-----seccion encarga de iniciarlizar variables de juego-----
-let h , player , caja , cajas = [] , nivel = 0
+let h , player , caja , cajas = [] , nivel = 1
 let jugando = false;
 let niveles = false;
 let informacion = false;
 let seleccionado=false;
-
-
-
-
+let imagenenpantalla= false;
+let controlesenpantalla=false;
+let crearmapa = false;
+let crearbotones = false;
+let hola = true;
 // musica
-
-
 //-----seccion encarga de cargar los sprites del juego-----
 function preload() {
   ImagenPlayer_right = loadImage("assets/Player_right.png");
@@ -70,8 +69,8 @@ Swal.fire({
 function iniciar(){
   nivel=1
   Construir(mapas())
+  controlesenpantalla=true;
   return jugando=true;
-  
 }
 function elegirnivel(){
   return niveles=true;
@@ -86,42 +85,62 @@ function jugarNiveln(){
   Construir(mapas());
   seleccionado=true;
 }
-
-
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
 function setup() {
   h = windowHeight/10
   createCanvas(windowHeight, windowHeight)
   board = new Tablero
   almacen = new Almacen
-  slider=createSlider(1,10,1,1);
-  slider.position(580, 500);
   // creación botones
-      button = createButton('Regresar al menu principal');
-      button.position(0, 600);
-      button.center("horizontal");  
-      button.mousePressed(recargarpagina);
-      button.style("background-color","#4CAF50C");
-      button.style("border","none");
-      button.style("color","black");
-      button.style("padding","10px 10px");
-      button.style("border-radius","10px")
-      button.style("fount-size","10px")
-      button.style("box-shadow", "0 4px 4px 0")
+      if (crearbotones==false &&  niveles==true){
+        slider=createSlider(1,10,1,1);
+        slider.position(0,windowHeight/2);
+        slider.center('horizontal')
+        button = createButton('Regresar al menu principal');
+        button.position(0, windowHeight/1.5);
+        button.center("horizontal");  
+        button.mousePressed(recargarpagina);
+        button.style("background-color","#4CAF50C");
+        button.style("border","none");
+        button.style("color","black");
+        button.style("padding","10px 10px");
+        button.style("border-radius","10px")
+        button.style("fount-size","10px")
+        button.style("box-shadow", "0 4px 4px 0")
 
       // boton 1 (El numero corresponde el nivel seleccionado)
-      boton_1=createButton("Jugar Nivel");
-      boton_1.position(0, 540);
-      boton_1.center("horizontal");
-      boton_1.mousePressed(jugarNiveln)
-      boton_1.style("background-color","#8CFF98");
-      boton_1.style("border","none");
-      boton_1.style("color","black");
-      boton_1.style("padding","10px 10px");
-      boton_1.style("border-radius","10px")
-      boton_1.style("fount-size","10px")
-      boton_1.style("box-shadow", "0 4px 4px 0")
+        boton_1=createButton("Jugar Nivel");
+        boton_1.position(0, windowHeight/1.7);
+        boton_1.center("horizontal");
+        boton_1.mousePressed(jugarNiveln)
+        boton_1.style("background-color","#8CFF98");
+        boton_1.style("border","none");
+        boton_1.style("color","black");
+        boton_1.style("padding","10px 10px");
+        boton_1.style("border-radius","10px")
+        boton_1.style("fount-size","10px")
+        boton_1.style("box-shadow", "0 4px 4px 0")
+        crearbotones=true;
+      }
       // boton 2
+      if (controlesenpantalla==true){
+        controles = createImg("assets/controles.png")
+        controles.position(windowWidth-windowHeight/2,windowHeight/3);
+        controles.size(windowHeight/2,windowHeight/2);
+        //se cambia el valor para determinar que ya se creo la imagen de los controles
+      }
+    
+      //verifica si el boton "sobrenosotros" fue presionado y si no se ha creado ya la  informacion de esa parte, de ser asi la crea.
+      if (imagenenpantalla==false && informacion==true){
+        aboutus = createImg("assets/fondo.png",'sobre nosotros');
+        aboutus.position(0,0);
+        aboutus.size(windowWidth,windowHeight);
+        button = createButton('regresar al menu principal');
+        button.position(0, windowHeight/1.1);
+        button.center("horizontal");
+        button.mousePressed(recargarpagina);
+        imagenenpantalla=true;
+      }
 }
 
 //-----se encarga de representar el mapa y crear los objetos en este-----
@@ -164,7 +183,6 @@ function ncajas(){
     nivel = nivel + 1
     setup()
     Construir(mapas())
-    
   }
 }
 
@@ -497,13 +515,13 @@ function draw() {
     board.draw()
     almacen.draw()
     board.limitetablero('player')
-    slider.hide();
-    boton_1.hide()
-    button.show();
   }
   //si el boton niveles es seleccionado se ejecuta esta parte de aca
   if (niveles==true){
     // La valiable seleccionados determina su el usuario a escogido o no un nivel, con la intención de controlar el canvas mostrado
+    if (crearbotones==false){
+      setup();
+    }
     if(seleccionado==false){
       background("#59656F");
       boton_1.show();
@@ -551,24 +569,18 @@ function draw() {
       board.limitetablero('player')
       slider.hide();
       boton_1.hide();
-      button.show();
+      button.hide();
     }
-    
   }
   //si el boton informacion es seleccionado se ejecuta esta parte de aca.
   if (informacion==true){
     background('#1e243b');
-    aboutus = createImg("assets/fondo.png",'sobre nosotros');
-    aboutus.position(0,0);
-    aboutus.size(windowWidth,windowHeight);
-    //crea un boton que se devuelve al menu (recargando la pagina)
-    button = createButton('Regresar al menu principal');
-    button.position(0, windowHeight/1.1);
-    button.center("horizontal");
-    button.mousePressed(recargarpagina);
-  }
+    //verifica si se creo la informacion de los botones, si es falso entonces la crea
+    if (imagenenpantalla==false){
+      setup();
+    }
+  } 
 }
-
 
 
 
