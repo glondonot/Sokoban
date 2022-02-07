@@ -3,7 +3,9 @@ let h , player , caja , cajas = [] , nivel = 1
 let jugando = false;
 let niveles = false;
 let informacion = false;
-
+let imagenenpantalla= false;
+let controlesenpantalla=false;
+let crearmapa = false;
 //-----seccion encarga de cargar los sprites del juego-----
 function preload() {
   ImagenPlayer_right = loadImage("assets/Player_right.png");
@@ -56,14 +58,36 @@ function informacionimportante(){
 
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
 function setup() {
+  //esta seccion verifica si el boton de jugar fue presionado y si el 
   h = windowHeight/10
   createCanvas(windowHeight, windowHeight)
   board = new Tablero
   almacen = new Almacen
   //llama la funcion mapa y segun el mapa este es construido
   Construir(mapas())
-}
+  // verifica si el boton jugar fue presionado y ademas si aun no se ha creo la imagen de los controles, si esto es asi entonces crea la imagen 
+  if (controlesenpantalla==false && jugando==true){
+    
+    controles = createImg("assets/controles.png")
+    controles.position(windowWidth-windowHeight/2,windowHeight/3);
+    controles.size(windowHeight/2,windowHeight/2);
+    //se cambia el valor para determinar que ya se creo la imagen de los controles
+    controlesenpantalla=true;
+  }
 
+  //verifica si el boton "sobrenosotros" fue presionado y si no se ha creado ya la  informacion de esa parte, de ser asi la crea.
+  if (imagenenpantalla==false && informacion==true){
+    aboutus = createImg("assets/fondo.png",'sobre nosotros');
+    aboutus.position(0,0);
+    aboutus.size(windowWidth,windowHeight);
+    button = createButton('regresar al menu principal');
+    button.position(0, windowHeight/1.1);
+    button.center("horizontal");
+    button.mousePressed(recargarpagina);
+    imagenenpantalla=true;
+  }
+
+}
 //-----se encarga de representar el mapa y crear los objetos en este-----
 function Construir(map){
   let c = 0
@@ -111,13 +135,17 @@ function draw() {
   //si el boton jugar es seleccionado se ejecuta esta parte de aca
   if (jugando==true){
     background(220);
+    //verifica si se creo la imagen de los botones, si es falso entonces la crea
+    if (controlesenpantalla==false){
+      setup();
+    }
     almacen.victoria()
     player.draw()
     player.limite()
     ncajas()
     board.draw()
     almacen.draw()
-    board.limitetablero('player')
+    board.limitetablero('player') 
   }
   //si el boton niveles es seleccionado se ehecuta esta parte de aca
   if (niveles==true){
@@ -126,14 +154,10 @@ function draw() {
   //si el boton informacion es seleccionado se ejecuta esta parte de aca.
   if (informacion==true){
     background('#1e243b');
-    aboutus = createImg("assets/fondo.png",'sobre nosotros');
-    aboutus.position(0,0);
-    aboutus.size(windowWidth,windowHeight);
-    //crea un boton que se devuelve al menu (recargando la pagina)
-    button = createButton('regresar al menu principal');
-    button.position(0, windowHeight/1.1);
-    button.center("horizontal");
-    button.mousePressed(recargarpagina);
+    //verifica si se creo la informacion de los botones, si es falso entonces la crea
+    if (imagenenpantalla==false){
+      setup();
+    }
   }
 }
 //funcion que recarga la pagina
