@@ -1,7 +1,9 @@
 //-----seccion encarga de iniciarlizar variables de juego-----
-let h , player , caja , cajas = [] , nivel = 1, menu=true, instrucciones=false, niveles=false;
-
-// HOLA ESTOY PROBANDO ALGO EN GIT HUB POR FAVOR IGNORAR POR COMPLETO ESTE COMMIT
+let h , player , caja , cajas = [] , nivel = 0
+let jugando = false;
+let niveles = false;
+let informacion = false;
+seleccionado=false;
 
 //-----seccion encarga de cargar los sprites del juego-----
 function preload() {
@@ -10,7 +12,124 @@ function preload() {
   ImagenBox = loadImage("assets/Box.png");
   ImagenWall = loadImage("assets/Wall.png");
   ImagenStorage = loadImage("assets/Storage.png");
-  MenuWallpaper=loadImage("assets/hero.jpg");
+  nivel1=loadImage("assets/nivel1.png");
+  nivel2=loadImage("assets/nivel2.png");
+  nivel3=loadImage("assets/nivel3.png");
+  nivel4=loadImage("assets/nivel4.png");
+  nivel5=loadImage("assets/nivel5.png");
+  nivel6=loadImage("assets/nivel6.png");
+  nivel7=loadImage("assets/nivel7.png");
+  nivel8=loadImage("assets/nivel8.png");
+  nivel9=loadImage("assets/nivel9.png");
+  nivel10=loadImage("assets/nivel10.png");
+
+}
+//crea el menu que actua como una ventana emergente.
+Swal.fire({
+  title: 'Sokoban!',
+  showDenyButton: true,
+  showCancelButton: true,
+  allowOutsideClick: false,
+  confirmButtonText: 'Jugar',
+  denyButtonText: `Selector de niveles`,
+  denyButtonColor: '#1C6DD0',
+  cancelButtonText: 'Sobre nosotros',
+  cancelButtonColor: '#A3E4DB',
+  backdrop: "#B983FF",
+  background:"#94B3FD",
+  imageUrl: 'assets/inicio.png',
+  imageWidth: 400,
+  imageHeight: 400,
+  imageAlt: 'Custom image',
+  //esta parte se encarga de mostrar los botones y sus resultados
+}).then((result) => {
+  if (result.isConfirmed) {
+    Swal.fire('Sobokan es un juego en el que debes poner las cajas encima de las marcas. \n ¡una vez hecho pasaras al siguiente nivel! \n ten cuidado, si haces movimientos equivocados puedes terminar atascando las cajas y la unica manera de continuar es reiniciar el nivel. \n ¡buena suerte!', '', 'info')
+    iniciar();
+  } 
+  if (result.isDenied) {
+    Swal.fire('Selecciona el nivel que quieres jugar', '', 'info')
+    elegirnivel();
+    
+  }
+  if (result.isDismissed) {
+    informacionimportante();
+    
+    }
+})
+//estas funciones retornan un valor positivo para hacer referencia que es la secccion activa
+function iniciar(){
+  nivel=1
+  Construir(mapas())
+  return jugando=true;
+  
+}
+function elegirnivel(){
+  return niveles=true;
+}
+function informacionimportante(){
+  return informacion=true;
+}
+
+// Inicar nivel escogido 
+function inicarNivel1(){
+  nivel=1;
+  Construir(mapas())
+  seleccionado=true;
+}
+
+function inicarNivel2(){
+  nivel=2;
+  Construir(mapas())
+  seleccionado=true;
+}
+
+function inicarNivel3(){
+  nivel=3;
+  Construir(mapas())
+  seleccionado=true;
+}
+
+function inicarNivel4(){
+  nivel=4;
+  Construir(mapas())
+  seleccionado=true;
+}
+
+function inicarNivel5(){
+  nivel=5;
+  Construir(mapas())
+  seleccionado=true;
+}
+
+function inicarNivel6(){
+  nivel=6;
+  Construir(mapas())
+  seleccionado=true;
+}
+
+function inicarNivel7(){
+  nivel=7;
+  Construir(mapas())
+  seleccionado=true;
+}
+
+function inicarNivel8(){
+  nivel=8;
+  Construir(mapas())
+  seleccionado=true;
+}
+
+function inicarNivel9(){
+  nivel=9;
+  Construir(mapas())
+  seleccionado=true;
+}
+
+function inicarNivel10(){
+  nivel=10;
+  Construir(mapas())
+  seleccionado=true;
 }
 
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
@@ -19,78 +138,143 @@ function setup() {
   createCanvas(windowHeight, windowHeight)
   board = new Tablero
   almacen = new Almacen
-  //llama la funcion mapa y segun el mapa este es construido
-  Construir(mapas())
-  // creación botones menu 
-  boton_jugar = createButton('Jugar'); 
-  boton_jugar.position(450,370);
-  boton_jugar.style('background-color', '#329F5B');
-  boton_jugar.mousePressed(iniciar_juego_en_0);
+  slider=createSlider(1,10,1,1);
+  slider.position(580, 500);
+  // creación botones
+      button = createButton('Regresar al menu principal');
+      button.position(0, 600);
+      button.center("horizontal");  
+      button.mousePressed(recargarpagina);
+      button.style("background-color","#4CAF50C");
+      button.style("border","none");
+      button.style("color","black");
+      button.style("padding","10px 10px");
+      button.style("border-radius","10px")
+      button.style("fount-size","10px")
+      button.style("box-shadow", "0 4px 4px 0")
 
-
-  boton_instrucciones=createButton("Instrucciones");
-  boton_instrucciones.position(450,430);
-  boton_instrucciones.mousePressed(iniciar_instrucciones);
-
-  boton_niveles=createButton("niveles");
-  boton_niveles.position(450,480);
-  boton_niveles.mousePressed(menu_niveles);
-
-
-  // Estos son los botones que me generan problemas
-
-  // seleccion_nivel=createInput("");
-  // seleccion_nivel.position(0,0);
-  // seleccion_nivel.size(100);
-  // nivel_escogido=seleccion_nivel.input(usuario_selecciona_nivel,Number);
-  // // nivel_escogido=parseInt(nivel_escogido,10);
-
-
-  // boton_nivel_escogido=createButton("Seleccionar");
-  // boton_nivel_escogido.position(400,550);
-  // boton_nivel_escogido.mousePressed(iniciar_nivel_escogido);
+      // boton 1 (El numero corresponde el nivel seleccionado)
+      boton_1=createButton("Nivel 1");
+      boton_1.position(0, 540);
+      boton_1.center("horizontal");
+      boton_1.mousePressed(inicarNivel1)
+      boton_1.style("background-color","#8CFF98");
+      boton_1.style("border","none");
+      boton_1.style("color","black");
+      boton_1.style("padding","10px 10px");
+      boton_1.style("border-radius","10px")
+      boton_1.style("fount-size","10px")
+      boton_1.style("box-shadow", "0 4px 4px 0")
+      // boton 2
+      boton_2=createButton("Nivel 2");
+      boton_2.position(0, 540);
+      boton_2.center("horizontal");
+      boton_2.mousePressed(inicarNivel2)
+      boton_2.style("background-color","#8CFF98");
+      boton_2.style("border","none");
+      boton_2.style("color","black");
+      boton_2.style("padding","10px 10px");
+      boton_2.style("border-radius","10px")
+      boton_2.style("fount-size","10px")
+      boton_2.style("box-shadow", "0 4px 4px 0")
+      // boton 3
+      boton_3=createButton("Nivel 3");
+      boton_3.position(0, 540);
+      boton_3.center("horizontal");
+      boton_3.mousePressed(inicarNivel3)
+      boton_3.style("background-color","#8CFF98");
+      boton_3.style("border","none");
+      boton_3.style("color","black");
+      boton_3.style("padding","10px 10px");
+      boton_3.style("border-radius","10px")
+      boton_3.style("fount-size","10px")
+      boton_3.style("box-shadow", "0 4px 4px 0")
+      // Boton 4
+      boton_4=createButton("Nivel 4");
+      boton_4.position(0, 540);
+      boton_4.center("horizontal");
+      boton_4.mousePressed(inicarNivel4)
+      boton_4.style("background-color","#8CFF98");
+      boton_4.style("border","none");
+      boton_4.style("color","black");
+      boton_4.style("padding","10px 10px");
+      boton_4.style("border-radius","10px")
+      boton_4.style("fount-size","10px")
+      boton_4.style("box-shadow", "0 4px 4px 0")
+      // boton 5b
+      boton_5=createButton("Nivel 5");
+      boton_5.position(0, 540);
+      boton_5.center("horizontal");
+      boton_5.mousePressed(inicarNivel5)
+      boton_5.style("background-color","#8CFF98");
+      boton_5.style("border","none");
+      boton_5.style("color","black");
+      boton_5.style("padding","10px 10px");
+      boton_5.style("border-radius","10px")
+      boton_5.style("fount-size","10px")
+      boton_5.style("box-shadow", "0 4px 4px 0")
+      // boton 6
+      boton_6=createButton("Nivel 6");
+      boton_6.position(0, 540);
+      boton_6.center("horizontal");
+      boton_6.mousePressed(inicarNivel6)
+      boton_6.style("background-color","#8CFF98");
+      boton_6.style("border","none");
+      boton_6.style("color","black");
+      boton_6.style("padding","10px 10px");
+      boton_6.style("border-radius","10px")
+      boton_6.style("fount-size","10px")
+      boton_6.style("box-shadow", "0 4px 4px 0")
+      // boton 7
+      boton_7=createButton("Nivel 7");
+      boton_7.position(0, 540);
+      boton_7.center("horizontal");
+      boton_7.mousePressed(inicarNivel7)
+      boton_7.style("background-color","#8CFF98");
+      boton_7.style("border","none");
+      boton_7.style("color","black");
+      boton_7.style("padding","10px 10px");
+      boton_7.style("border-radius","10px")
+      boton_7.style("fount-size","10px")
+      boton_7.style("box-shadow", "0 4px 4px 0")
+      // boton 8
+      boton_8=createButton("Nivel 8");
+      boton_8.position(0, 540);
+      boton_8.center("horizontal");
+      boton_8.mousePressed(inicarNivel8)
+      boton_8.style("background-color","#8CFF98");
+      boton_8.style("border","none");
+      boton_8.style("color","black");
+      boton_8.style("padding","10px 10px");
+      boton_8.style("border-radius","10px")
+      boton_8.style("fount-size","10px")
+      boton_8.style("box-shadow", "0 4px 4px 0")
+      // boton 9
+      boton_9=createButton("Nivel 9");
+      boton_9.position(0, 540);
+      boton_9.center("horizontal");
+      boton_9.mousePressed(inicarNivel9)
+      boton_9.style("background-color","#8CFF98");
+      boton_9.style("border","none");
+      boton_9.style("color","black");
+      boton_9.style("padding","10px 10px");
+      boton_9.style("border-radius","10px")
+      boton_9.style("fount-size","10px")
+      boton_9.style("box-shadow", "0 4px 4px 0")
+      // boton 10
+      boton_10=createButton("Nivel 10");
+      boton_10.position(0, 540);
+      boton_10.center("horizontal");
+      boton_10.mousePressed(inicarNivel10)
+      boton_10.style("background-color","#8CFF98");
+      boton_10.style("border","none");
+      boton_10.style("color","black");
+      boton_10.style("padding","10px 10px");
+      boton_10.style("border-radius","10px")
+      boton_10.style("fount-size","10px")
+      boton_10.style("box-shadow", "0 4px 4px 0")
+      // asda
 }
-
-// funciones de los botones:
-function iniciar_juego_en_0(){
-  menu=!menu;
-  nivel=1;
-  boton_jugar.hide();
-  boton_instrucciones.hide();
-  boton_niveles.hide();
-  console.log(menu)
-  setup();
-}
-
-function iniciar_instrucciones(){
-  instrucciones=!instrucciones;
-  menu=false;
-  console.log(instrucciones);
-}
-
-function menu_niveles(){
-  menu=false;
-  niveles=!niveles;
-  console.log(niveles);
-}
-
-// Estas son las funciones de los botones que generan problemas
-
-// function usuario_selecciona_nivel(){
-//   nivel_escogido=this.value();
-//   return nivel_escogido;
-// }
-
-// function iniciar_nivel_escogido(nivel_seleccionado){
-//   nivel=nivel_seleccionado;
-//   boton_jugar.hide();
-//   boton_instrucciones.hide();
-//   boton_niveles.hide();
-//   boton_nivel_escogido.hide();
-//   setup();
-
-// }
-
 
 //-----se encarga de representar el mapa y crear los objetos en este-----
 function Construir(map){
@@ -131,68 +315,16 @@ function ncajas(){
     console.log('ya ganaste wapo')
     nivel = nivel + 1
     setup()
+    Construir(mapas())
+    
   }
 }
 
-//-----seccion encarga de dibujar objetos del juego-----
-function draw() {
-  if(menu==true && instrucciones==false){
-    createCanvas(750,650);
-    background("white");
-    image(MenuWallpaper,0,0,750,650);
-    boton_jugar.show();
-    boton_instrucciones.show();
-    boton_niveles.show();
-    // seleccion_nivel.hide()
-    // boton_nivel_escogido.hide();
-  }
-  else if(instrucciones==true && menu==false){
-    createCanvas(750,650);
-    background("white");
-    text('Aquí van las instrucciones',0,0);
-    boton_jugar.hide();
-    boton_instrucciones.hide();
-    boton_niveles.hide();
-  }
 
-  else if(menu==false && instrucciones==false && niveles==true ){
-    createCanvas(750,650);
-    background("gray");
-    boton_jugar.hide();
-    boton_instrucciones.hide();
-    boton_niveles.hide();
-    seleccion_nivel.show()
-    boton_nivel_escogido.show();
-  }
-
- 
-  else{
-    background(220);
-    almacen.victoria()
-    player.draw()
-    player.limite()
-    ncajas()
-    board.draw()
-    almacen.draw()
-    board.limitetablero('player')
-    boton_jugar.hide();
-    boton_instrucciones.hide();
-    boton_niveles.hide();
-    // seleccion_nivel.hide()
-    // boton_nivel_escogido.hide();
-  }
+//funcion que recarga la pagina
+function recargarpagina(){
+  location.reload();
 }
-
-// function draw() {
-//   background(220);
-//   almacen.victoria()
-//   player.draw()
-//   player.limite()
-//   ncajas()
-//   board.draw()
-//   almacen.draw()
-//   board.limitetablero('player')
-// }
 
 //-----Clase tablero representa la posicion de las paredes y las coliciones con estos-----
 class Tablero{
@@ -494,13 +626,215 @@ function keyPressed(){
   }
   if (keyCode == 32){
     setup()
+    Construir(mapas())
   }
   if (keyCode == 77){
     almacen.victory = true
   }
-  if (keyCode== 27){
-    menu=true;
-    instrucciones=false;
-    niveles=false;
+  if(keyCode == 66){
+  
+  }
+}
+
+//-----seccion encarga de dibujar objetos del juego-----
+function draw() {
+  console.log(niveles);
+  //si el boton jugar es seleccionado se ejecuta esta parte de aca
+  if (jugando==true){
+    background(220);
+    almacen.victoria()
+    player.draw()
+    player.limite()
+    ncajas()
+    board.draw()
+    almacen.draw()
+    board.limitetablero('player')
+    slider.hide();
+    boton_1.hide();
+    boton_2.hide();
+    boton_3.hide();
+    boton_4.hide();
+    boton_5.hide();
+    boton_6.hide();
+    boton_7.hide();
+    boton_8.hide();
+    boton_9.hide();
+    boton_10.hide();
+    button.hide();
+  }
+  //si el boton niveles es seleccionado se ejecuta esta parte de aca
+  if (niveles==true){
+    // La valiable seleccionados determina su el usuario a escogido o no un nivel, con la intención de controlar el canvas mostrado
+    if(seleccionado==false){
+      background("#59656F");
+      // Slider.value es una función propia de p5, que determina el valor actual de un slider
+      if(slider.value()==1){
+        image(nivel1,125,50,450,400);
+        boton_1.show();
+        boton_2.hide();
+        boton_3.hide();
+        boton_4.hide();
+        boton_5.hide();
+        boton_6.hide();
+        boton_7.hide();
+        boton_8.hide();
+        boton_9.hide();
+        boton_10.hide();
+      }
+      else if(slider.value()==2){
+        image(nivel2,125,50,450,400);
+        boton_1.hide();
+        boton_2.show();
+        boton_3.hide();
+        boton_4.hide();
+        boton_5.hide();
+        boton_6.hide();
+        boton_7.hide();
+        boton_8.hide();
+        boton_9.hide();
+        boton_10.hide();
+
+      }
+      else if(slider.value()==3){
+        image(nivel3,125,50,450,400);
+        boton_1.hide();
+        boton_2.hide();
+        boton_3.show();
+        boton_4.hide();
+        boton_5.hide();
+        boton_6.hide();
+        boton_7.hide();
+        boton_8.hide();
+        boton_9.hide();
+        boton_10.hide();
+      }
+      else if(slider.value()==4){
+        image(nivel4,125,50,450,400);
+        boton_1.hide();
+        boton_2.hide();
+        boton_3.hide();
+        boton_4.show();
+        boton_5.hide();
+        boton_6.hide();
+        boton_7.hide();
+        boton_8.hide();
+        boton_9.hide();
+        boton_10.hide();
+      }
+      else if(slider.value()==5){
+        image(nivel5,125,50,450,400);
+        boton_1.hide();
+        boton_2.hide();
+        boton_3.hide();
+        boton_4.hide();
+        boton_5.show();
+        boton_6.hide();
+        boton_7.hide();
+        boton_8.hide();
+        boton_9.hide();
+        boton_10.hide();
+      }
+      else if(slider.value()==6){
+        image(nivel6,125,50,450,400);
+        boton_1.hide();
+        boton_2.hide();
+        boton_3.hide();
+        boton_4.hide();
+        boton_5.hide();
+        boton_6.show();
+        boton_7.hide();
+        boton_8.hide();
+        boton_9.hide();
+        boton_10.hide();
+      }
+      else if(slider.value()==7){
+        image(nivel7,125,50,450,400);
+        boton_1.hide();
+        boton_2.hide();
+        boton_3.hide();
+        boton_4.hide();
+        boton_5.hide();
+        boton_6.hide();
+        boton_7.show();
+        boton_8.hide();
+        boton_9.hide();
+        boton_10.hide();
+      }
+      else if(slider.value()==8){
+        image(nivel8,125,50,450,400);
+        boton_1.hide();
+        boton_2.hide();
+        boton_3.hide();
+        boton_4.hide();
+        boton_5.hide();
+        boton_6.hide();
+        boton_7.hide();
+        boton_8.show();
+        boton_9.hide();
+        boton_10.hide();
+      }
+      else if(slider.value()==9){
+        image(nivel9,125,50,450,400);
+        boton_1.hide();
+        boton_2.hide();
+        boton_3.hide();
+        boton_4.hide();
+        boton_5.hide();
+        boton_6.hide();
+        boton_7.hide();
+        boton_8.hide();
+        boton_9.show();
+        boton_10.hide();
+      }
+      else if(slider.value()==10){
+        image(nivel10,125,50,450,400);
+        boton_1.hide();
+        boton_2.hide();
+        boton_3.hide();
+        boton_4.hide();
+        boton_5.hide();
+        boton_6.hide();
+        boton_7.hide();
+        boton_8.hide();
+        boton_9.hide();
+        boton_10.show();
+      }
+
+    }
+    else{
+      background(220);
+      almacen.victoria()
+      player.draw()
+      player.limite()
+      ncajas()
+      board.draw()
+      almacen.draw()
+      board.limitetablero('player')
+      slider.hide();
+      boton_1.hide();
+      boton_2.hide();
+      boton_3.hide();
+      boton_4.hide();
+      boton_5.hide();
+      boton_6.hide();
+      boton_7.hide();
+      boton_8.hide();
+      boton_9.hide();
+      boton_10.hide();
+      button.hide();
+    }
+    
+  }
+  //si el boton informacion es seleccionado se ejecuta esta parte de aca.
+  if (informacion==true){
+    background('#1e243b');
+    aboutus = createImg("assets/fondo.png",'sobre nosotros');
+    aboutus.position(0,0);
+    aboutus.size(windowWidth,windowHeight);
+    //crea un boton que se devuelve al menu (recargando la pagina)
+    button = createButton('Regresar al menu principal');
+    button.position(0, windowHeight/1.1);
+    button.center("horizontal");
+    button.mousePressed(recargarpagina);
   }
 }
