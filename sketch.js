@@ -3,10 +3,13 @@ let h , player , caja , cajas = [] , nivel = 1
 let jugando = false;
 let niveles = false;
 let informacion = false;
+let seleccionado=false;
 let imagenenpantalla= false;
 let controlesenpantalla=false;
 let crearmapa = false;
-let cancion=false;
+let crearbotones = false;
+let hola = true;
+let cancion = false;
 //-----seccion encarga de cargar los sprites del juego-----
 function preload() {
   ImagenPlayer_right = loadImage("assets/Player_right.png");
@@ -14,12 +17,23 @@ function preload() {
   ImagenBox = loadImage("assets/Box.png");
   ImagenWall = loadImage("assets/Wall.png");
   ImagenStorage = loadImage("assets/Storage.png");
+  nivel1=loadImage("assets/nivel1.png");
+  nivel2=loadImage("assets/nivel2.png");
+  nivel3=loadImage("assets/nivel3.png");
+  nivel4=loadImage("assets/nivel9.png");
+  nivel5=loadImage("assets/nivel7.png");
+  nivel6=loadImage("assets/nivel4.png");
+  nivel7=loadImage("assets/nivel8.png");
+  nivel8=loadImage("assets/nivel5.png");
+  nivel9=loadImage("assets/nivel6.png");
+  nivel10=loadImage("assets/nivel10.png");
   soundFormats('ogg', 'mp3');
   soundFile = loadSound('assets/musica.mp3');
+
 }
 //crea el menu que actua como una ventana emergente.
 Swal.fire({
-  title: 'Sokoban!',
+  title: 'Sokoban',
   showDenyButton: true,
   showCancelButton: true,
   allowOutsideClick: false,
@@ -28,8 +42,8 @@ Swal.fire({
   denyButtonColor: '#1C6DD0',
   cancelButtonText: 'Sobre nosotros',
   cancelButtonColor: '#A3E4DB',
-  backdrop: "#B983FF",
-  background:"#94B3FD",
+  backdrop: "#181D31",
+  background:"#F0E9D2",
   imageUrl: 'assets/inicio.png',
   imageWidth: 400,
   imageHeight: 400,
@@ -38,59 +52,102 @@ Swal.fire({
 }).then((result) => {
   if (result.isConfirmed) {
     Swal.fire('Sobokan es un juego en el que debes poner las cajas encima de las marcas. \n ¡una vez hecho pasaras al siguiente nivel! \n ten cuidado, si haces movimientos equivocados puedes terminar atascando las cajas y la unica manera de continuar es reiniciar el nivel. \n ¡buena suerte!', '', 'info')
-    iniciar();
+    iniciar(jugando=true);
   } 
   if (result.isDenied) {
-    Swal.fire('Changes are not saved', '', 'info')
+    Swal.fire('Selecciona el nivel que quieres jugar', '', 'info')
     elegirnivel();
+    
   }
   if (result.isDismissed) {
     informacionimportante();
+    
     }
 })
 //estas funciones retornan un valor positivo para hacer referencia que es la secccion activa
+//seccion en la que se juega
 function iniciar(){
-  return jugando=true;
+  nivel = 1
+  jugando = true;
+  setup()
+  Construir(mapas())
 }
+//seccion en la que se elige el nivel
 function elegirnivel(){
-  return niveles=true;
+  niveles=true;
 }
+//seccion en la que se muestra la informacion importante
 function informacionimportante(){
-  return informacion=true;
+  informacion=true;
 }
 
+// Inicar nivel escogido 
+function jugarNiveln(){
+  nivel=slider.value();
+  jugando = true;
+  setup()
+  Construir(mapas())
+  seleccionado=true;
+}
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
 function setup() {
-  //esta seccion verifica si el boton de jugar fue presionado y si el 
+  imagenesancho=windowWidth/2.3;
+  imageneslargo=windowHeight/2.3;
   h = windowHeight/10
   createCanvas(windowHeight, windowHeight)
   board = new Tablero
   almacen = new Almacen
-  //llama la funcion mapa y segun el mapa este es construido
-  Construir(mapas())
-  // verifica si el boton jugar fue presionado y ademas si aun no se ha creo la imagen de los controles, si esto es asi entonces crea la imagen 
-  if (controlesenpantalla==false && jugando==true){
-    
-    controles = createImg("assets/controles.png")
-    controles.position(windowWidth-windowHeight/2,windowHeight/3);
-    controles.size(windowHeight/2,windowHeight/2);
-    //se cambia el valor para determinar que ya se creo la imagen de los controles
-    controlesenpantalla=true;
-  }
-
-  //verifica si el boton "sobrenosotros" fue presionado y si no se ha creado ya la  informacion de esa parte, de ser asi la crea.
-  if (imagenenpantalla==false && informacion==true){
-    aboutus = createImg("assets/fondo.png",'sobre nosotros');
-    aboutus.position(0,0);
-    aboutus.size(windowWidth,windowHeight);
-    button = createButton('regresar al menu principal');
-    button.position(0, windowHeight/1.1);
-    button.center("horizontal");
+  // creación botones
+  if (crearbotones==false &&  niveles==true){
+    slider=createSlider(1,10,1,1);
+    slider.position(0,windowHeight/2);
+    slider.center('horizontal')
+    button = createButton('Regresar al menu principal');
+    button.position(0, windowHeight/1.5);
+    button.center("horizontal");  
     button.mousePressed(recargarpagina);
-    imagenenpantalla=true;
-  }
+    button.style("background-color","#4CAF50C");
+    button.style("border","none");
+    button.style("color","black");
+    button.style("padding","10px 10px");
+    button.style("border-radius","10px")
+    button.style("fount-size","10px")
+    button.style("box-shadow", "0 4px 4px 0")
 
+    // boton 1 (El numero corresponde el nivel seleccionado)
+    boton_1=createButton("Jugar Nivel");
+    boton_1.position(0, windowHeight/1.7);
+    boton_1.center("horizontal");
+    boton_1.mousePressed(jugarNiveln)
+    boton_1.style("background-color","#8CFF98");
+    boton_1.style("border","none");
+    boton_1.style("color","black");
+    boton_1.style("padding","10px 10px");
+    boton_1.style("border-radius","10px")
+    boton_1.style("fount-size","10px")
+    boton_1.style("box-shadow", "0 4px 4px 0")
+    crearbotones=true;
+    }
+    // crea la imagen de los controles
+    if (jugando == true){
+      controles = createImg("assets/controles.png")
+      controles.position(windowWidth-windowHeight/2,windowHeight/3);
+      controles.size(windowHeight/2,windowHeight/2);
+    }
+    
+    //verifica si el boton "sobrenosotros" fue presionado y si no se ha creado ya la  informacion de esa parte, de ser asi la crea.
+    if (imagenenpantalla==false && informacion==true){
+      aboutus = createImg("assets/fondo.png",'sobre nosotros');
+      aboutus.position(0,0);
+      aboutus.size(windowWidth,windowHeight);
+      button = createButton('regresar al menu principal');
+      button.position(0, windowHeight/1.1);
+      button.center("horizontal");
+      button.mousePressed(recargarpagina);
+      imagenenpantalla=true;
+    }
 }
+
 //-----se encarga de representar el mapa y crear los objetos en este-----
 function Construir(map){
   let c = 0
@@ -130,47 +187,8 @@ function ncajas(){
     console.log('ya ganaste wapo')
     nivel = nivel + 1
     setup()
+    Construir(mapas())
   }
-}
-
-//-----seccion encarga de dibujar objetos del juego-----
-function draw() {
-  // Ejecución de la musica
-  if(cancion==false){
-    soundFile.loop()
-    cancion=true;
-  }
-  //si el boton jugar es seleccionado se ejecuta esta parte de aca
-  if (jugando==true){
-    background(220);
-    //verifica si se creo la imagen de los botones, si es falso entonces la crea
-    if (controlesenpantalla==false){
-      setup();
-    }
-    almacen.victoria()
-    player.draw()
-    player.limite()
-    ncajas()
-    board.draw()
-    almacen.draw()
-    board.limitetablero('player') 
-  }
-  //si el boton niveles es seleccionado se ehecuta esta parte de aca
-  if (niveles==true){
-    background(50);
-  }
-  //si el boton informacion es seleccionado se ejecuta esta parte de aca.
-  if (informacion==true){
-    background('#1e243b');
-    //verifica si se creo la informacion de los botones, si es falso entonces la crea
-    if (imagenenpantalla==false){
-      setup();
-    }
-  }
-}
-//funcion que recarga la pagina
-function recargarpagina(){
-  location.reload();
 }
 //-----Clase tablero representa la posicion de las paredes y las coliciones con estos-----
 class Tablero{
@@ -455,7 +473,10 @@ class Almacen{
     }
   }
 }
-
+//funcion que recarga la pagina
+function recargarpagina(){
+  location.reload();
+}
 //-----Funcion se encarga del movimiento del personaje con las teclas-----
 function keyPressed(){
   if (keyCode == UP_ARROW){
@@ -472,8 +493,108 @@ function keyPressed(){
   }
   if (keyCode == 32){
     setup()
+    Construir(mapas())
   }
-  if (keyCode == 77){
-    almacen.victory = true
+  if (keyCode == 27){
+    recargarpagina()
   }
 }
+
+//-----seccion encarga de dibujar objetos del juego-----
+function draw() {
+  //seccion que pone la cancion
+  if(cancion==false){
+    soundFile.setVolume(0.1)
+    soundFile.loop()
+    cancion=true;
+  }
+  console.log(niveles);
+  //si el boton jugar es seleccionado se ejecuta esta parte de aca
+  if (jugando==true){
+    background(220);
+    almacen.victoria()
+    player.draw()
+    player.limite()
+    ncajas()
+    board.draw()
+    almacen.draw()
+    board.limitetablero('player')
+  }
+  //si el boton niveles es seleccionado se ejecuta esta parte de aca
+  if (niveles==true){
+    //si no existen los botones los crea
+    if (crearbotones==false){
+      setup();
+    }
+    // La valiable seleccionados determina su el usuario a escogido o no un nivel, con la intención de controlar el canvas mostrado
+    if(seleccionado==false){
+      background("#59656F");
+      boton_1.show();
+      // Slider.value es una función propia de p5, que determina el valor actual de un slider
+      if(slider.value()==1){
+        image(nivel1,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+      else if(slider.value()==2){
+        image(nivel2,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+      else if(slider.value()==3){
+        image(nivel3,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+      else if(slider.value()==4){
+        image(nivel4,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+      else if(slider.value()==5){
+        image(nivel5,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+      else if(slider.value()==6){
+        image(nivel6,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+      else if(slider.value()==7){
+        image(nivel7,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+      else if(slider.value()==8){
+        image(nivel8,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+      else if(slider.value()==9){
+        image(nivel9,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+      else if(slider.value()==10){
+        image(nivel10,windowWidth/8,windowHeight/20,imageneslargo,imageneslargo);
+      }
+
+    }
+    else{
+      background(220);
+      almacen.victoria()
+      player.draw()
+      player.limite()
+      ncajas()
+      board.draw()
+      almacen.draw()
+      board.limitetablero('player')
+      slider.hide();
+      boton_1.hide();
+      button.hide();
+    }
+  }
+  //si el boton informacion es seleccionado se ejecuta esta parte de aca.
+  if (informacion==true){
+    background('#1e243b');
+    //verifica si se creo la informacion de los botones, si es falso entonces la crea
+    if (imagenenpantalla==false){
+      setup();
+    }
+  } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
