@@ -20,12 +20,12 @@ function preload() {
   nivel1=loadImage("assets/nivel1.png");
   nivel2=loadImage("assets/nivel2.png");
   nivel3=loadImage("assets/nivel3.png");
-  nivel4=loadImage("assets/nivel4.png");
-  nivel5=loadImage("assets/nivel5.png");
-  nivel6=loadImage("assets/nivel6.png");
-  nivel7=loadImage("assets/nivel7.png");
-  nivel8=loadImage("assets/nivel8.png");
-  nivel9=loadImage("assets/nivel9.png");
+  nivel4=loadImage("assets/nivel9.png");
+  nivel5=loadImage("assets/nivel7.png");
+  nivel6=loadImage("assets/nivel4.png");
+  nivel7=loadImage("assets/nivel8.png");
+  nivel8=loadImage("assets/nivel5.png");
+  nivel9=loadImage("assets/nivel6.png");
   nivel10=loadImage("assets/nivel10.png");
   // soundFormats('ogg', 'mp3');
   // soundFile = loadSound('assets/musica.mp3');
@@ -53,7 +53,7 @@ Swal.fire({
 }).then((result) => {
   if (result.isConfirmed) {
     Swal.fire('Sobokan es un juego en el que debes poner las cajas encima de las marcas. \n ¡una vez hecho pasaras al siguiente nivel! \n ten cuidado, si haces movimientos equivocados puedes terminar atascando las cajas y la unica manera de continuar es reiniciar el nivel. \n ¡buena suerte!', '', 'info')
-    iniciar();
+    iniciar(jugando=true);
   } 
   if (result.isDenied) {
     Swal.fire('Selecciona el nivel que quieres jugar', '', 'info')
@@ -67,22 +67,25 @@ Swal.fire({
 })
 //estas funciones retornan un valor positivo para hacer referencia que es la secccion activa
 function iniciar(){
-  nivel=1
+  nivel = 1
+  jugando = true;
+  setup()
   Construir(mapas())
-  controlesenpantalla=true;
-  return jugando=true;
+  
 }
 function elegirnivel(){
-  return niveles=true;
+  niveles=true;
 }
 function informacionimportante(){
-  return informacion=true;
+  informacion=true;
 }
 
 // Inicar nivel escogido 
 function jugarNiveln(){
   nivel=slider.value();
-  Construir(mapas());
+  jugando = true;
+  setup()
+  Construir(mapas())
   seleccionado=true;
 }
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
@@ -123,7 +126,7 @@ function setup() {
         crearbotones=true;
       }
       // boton 2
-      if (controlesenpantalla==true){
+      if (jugando == true){
         controles = createImg("assets/controles.png")
         controles.position(windowWidth-windowHeight/2,windowHeight/3);
         controles.size(windowHeight/2,windowHeight/2);
@@ -494,11 +497,8 @@ function keyPressed(){
     setup()
     Construir(mapas())
   }
-  if (keyCode == 77){
-    almacen.victory = true
-  }
-  if(keyCode == 66){
-  
+  if (keyCode == 27){
+    recargarpagina()
   }
 }
 
