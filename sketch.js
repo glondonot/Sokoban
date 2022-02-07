@@ -98,6 +98,12 @@ function jugarNiveln(){
 }
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
 function setup() {
+  //seccion que pone la cancion
+  if(cancion==false){
+    soundFile.setVolume(0.1)
+    soundFile.loop()
+    cancion=true;
+  }
   imagenesancho=windowWidth/2.3;
   imageneslargo=windowHeight/2.3;
   h = windowHeight/10
