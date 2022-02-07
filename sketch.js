@@ -3,7 +3,13 @@ let h , player , caja , cajas = [] , nivel = 0
 let jugando = false;
 let niveles = false;
 let informacion = false;
-seleccionado=false;
+let seleccionado=false;
+
+
+
+
+// musica
+
 
 //-----seccion encarga de cargar los sprites del juego-----
 function preload() {
@@ -22,8 +28,11 @@ function preload() {
   nivel8=loadImage("assets/nivel8.png");
   nivel9=loadImage("assets/nivel9.png");
   nivel10=loadImage("assets/nivel10.png");
+  // soundFormats('ogg', 'mp3');
+  // soundFile = loadSound('assets/musica.mp3');
 
 }
+
 //crea el menu que actua como una ventana emergente.
 Swal.fire({
   title: 'Sokoban!',
@@ -72,65 +81,12 @@ function informacionimportante(){
 }
 
 // Inicar nivel escogido 
-function inicarNivel1(){
-  nivel=1;
-  Construir(mapas())
+function jugarNiveln(){
+  nivel=slider.value();
+  Construir(mapas());
   seleccionado=true;
 }
 
-function inicarNivel2(){
-  nivel=2;
-  Construir(mapas())
-  seleccionado=true;
-}
-
-function inicarNivel3(){
-  nivel=3;
-  Construir(mapas())
-  seleccionado=true;
-}
-
-function inicarNivel4(){
-  nivel=4;
-  Construir(mapas())
-  seleccionado=true;
-}
-
-function inicarNivel5(){
-  nivel=5;
-  Construir(mapas())
-  seleccionado=true;
-}
-
-function inicarNivel6(){
-  nivel=6;
-  Construir(mapas())
-  seleccionado=true;
-}
-
-function inicarNivel7(){
-  nivel=7;
-  Construir(mapas())
-  seleccionado=true;
-}
-
-function inicarNivel8(){
-  nivel=8;
-  Construir(mapas())
-  seleccionado=true;
-}
-
-function inicarNivel9(){
-  nivel=9;
-  Construir(mapas())
-  seleccionado=true;
-}
-
-function inicarNivel10(){
-  nivel=10;
-  Construir(mapas())
-  seleccionado=true;
-}
 
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
 function setup() {
@@ -154,10 +110,10 @@ function setup() {
       button.style("box-shadow", "0 4px 4px 0")
 
       // boton 1 (El numero corresponde el nivel seleccionado)
-      boton_1=createButton("Nivel 1");
+      boton_1=createButton("Jugar Nivel");
       boton_1.position(0, 540);
       boton_1.center("horizontal");
-      boton_1.mousePressed(inicarNivel1)
+      boton_1.mousePressed(jugarNiveln)
       boton_1.style("background-color","#8CFF98");
       boton_1.style("border","none");
       boton_1.style("color","black");
@@ -166,114 +122,6 @@ function setup() {
       boton_1.style("fount-size","10px")
       boton_1.style("box-shadow", "0 4px 4px 0")
       // boton 2
-      boton_2=createButton("Nivel 2");
-      boton_2.position(0, 540);
-      boton_2.center("horizontal");
-      boton_2.mousePressed(inicarNivel2)
-      boton_2.style("background-color","#8CFF98");
-      boton_2.style("border","none");
-      boton_2.style("color","black");
-      boton_2.style("padding","10px 10px");
-      boton_2.style("border-radius","10px")
-      boton_2.style("fount-size","10px")
-      boton_2.style("box-shadow", "0 4px 4px 0")
-      // boton 3
-      boton_3=createButton("Nivel 3");
-      boton_3.position(0, 540);
-      boton_3.center("horizontal");
-      boton_3.mousePressed(inicarNivel3)
-      boton_3.style("background-color","#8CFF98");
-      boton_3.style("border","none");
-      boton_3.style("color","black");
-      boton_3.style("padding","10px 10px");
-      boton_3.style("border-radius","10px")
-      boton_3.style("fount-size","10px")
-      boton_3.style("box-shadow", "0 4px 4px 0")
-      // Boton 4
-      boton_4=createButton("Nivel 4");
-      boton_4.position(0, 540);
-      boton_4.center("horizontal");
-      boton_4.mousePressed(inicarNivel4)
-      boton_4.style("background-color","#8CFF98");
-      boton_4.style("border","none");
-      boton_4.style("color","black");
-      boton_4.style("padding","10px 10px");
-      boton_4.style("border-radius","10px")
-      boton_4.style("fount-size","10px")
-      boton_4.style("box-shadow", "0 4px 4px 0")
-      // boton 5b
-      boton_5=createButton("Nivel 5");
-      boton_5.position(0, 540);
-      boton_5.center("horizontal");
-      boton_5.mousePressed(inicarNivel5)
-      boton_5.style("background-color","#8CFF98");
-      boton_5.style("border","none");
-      boton_5.style("color","black");
-      boton_5.style("padding","10px 10px");
-      boton_5.style("border-radius","10px")
-      boton_5.style("fount-size","10px")
-      boton_5.style("box-shadow", "0 4px 4px 0")
-      // boton 6
-      boton_6=createButton("Nivel 6");
-      boton_6.position(0, 540);
-      boton_6.center("horizontal");
-      boton_6.mousePressed(inicarNivel6)
-      boton_6.style("background-color","#8CFF98");
-      boton_6.style("border","none");
-      boton_6.style("color","black");
-      boton_6.style("padding","10px 10px");
-      boton_6.style("border-radius","10px")
-      boton_6.style("fount-size","10px")
-      boton_6.style("box-shadow", "0 4px 4px 0")
-      // boton 7
-      boton_7=createButton("Nivel 7");
-      boton_7.position(0, 540);
-      boton_7.center("horizontal");
-      boton_7.mousePressed(inicarNivel7)
-      boton_7.style("background-color","#8CFF98");
-      boton_7.style("border","none");
-      boton_7.style("color","black");
-      boton_7.style("padding","10px 10px");
-      boton_7.style("border-radius","10px")
-      boton_7.style("fount-size","10px")
-      boton_7.style("box-shadow", "0 4px 4px 0")
-      // boton 8
-      boton_8=createButton("Nivel 8");
-      boton_8.position(0, 540);
-      boton_8.center("horizontal");
-      boton_8.mousePressed(inicarNivel8)
-      boton_8.style("background-color","#8CFF98");
-      boton_8.style("border","none");
-      boton_8.style("color","black");
-      boton_8.style("padding","10px 10px");
-      boton_8.style("border-radius","10px")
-      boton_8.style("fount-size","10px")
-      boton_8.style("box-shadow", "0 4px 4px 0")
-      // boton 9
-      boton_9=createButton("Nivel 9");
-      boton_9.position(0, 540);
-      boton_9.center("horizontal");
-      boton_9.mousePressed(inicarNivel9)
-      boton_9.style("background-color","#8CFF98");
-      boton_9.style("border","none");
-      boton_9.style("color","black");
-      boton_9.style("padding","10px 10px");
-      boton_9.style("border-radius","10px")
-      boton_9.style("fount-size","10px")
-      boton_9.style("box-shadow", "0 4px 4px 0")
-      // boton 10
-      boton_10=createButton("Nivel 10");
-      boton_10.position(0, 540);
-      boton_10.center("horizontal");
-      boton_10.mousePressed(inicarNivel10)
-      boton_10.style("background-color","#8CFF98");
-      boton_10.style("border","none");
-      boton_10.style("color","black");
-      boton_10.style("padding","10px 10px");
-      boton_10.style("border-radius","10px")
-      boton_10.style("fount-size","10px")
-      boton_10.style("box-shadow", "0 4px 4px 0")
-      // asda
 }
 
 //-----se encarga de representar el mapa y crear los objetos en este-----
@@ -650,154 +498,45 @@ function draw() {
     almacen.draw()
     board.limitetablero('player')
     slider.hide();
-    boton_1.hide();
-    boton_2.hide();
-    boton_3.hide();
-    boton_4.hide();
-    boton_5.hide();
-    boton_6.hide();
-    boton_7.hide();
-    boton_8.hide();
-    boton_9.hide();
-    boton_10.hide();
-    button.hide();
+    boton_1.hide()
+    button.show();
   }
   //si el boton niveles es seleccionado se ejecuta esta parte de aca
   if (niveles==true){
     // La valiable seleccionados determina su el usuario a escogido o no un nivel, con la intención de controlar el canvas mostrado
     if(seleccionado==false){
       background("#59656F");
+      boton_1.show();
       // Slider.value es una función propia de p5, que determina el valor actual de un slider
       if(slider.value()==1){
         image(nivel1,125,50,450,400);
-        boton_1.show();
-        boton_2.hide();
-        boton_3.hide();
-        boton_4.hide();
-        boton_5.hide();
-        boton_6.hide();
-        boton_7.hide();
-        boton_8.hide();
-        boton_9.hide();
-        boton_10.hide();
       }
       else if(slider.value()==2){
         image(nivel2,125,50,450,400);
-        boton_1.hide();
-        boton_2.show();
-        boton_3.hide();
-        boton_4.hide();
-        boton_5.hide();
-        boton_6.hide();
-        boton_7.hide();
-        boton_8.hide();
-        boton_9.hide();
-        boton_10.hide();
-
       }
       else if(slider.value()==3){
         image(nivel3,125,50,450,400);
-        boton_1.hide();
-        boton_2.hide();
-        boton_3.show();
-        boton_4.hide();
-        boton_5.hide();
-        boton_6.hide();
-        boton_7.hide();
-        boton_8.hide();
-        boton_9.hide();
-        boton_10.hide();
       }
       else if(slider.value()==4){
         image(nivel4,125,50,450,400);
-        boton_1.hide();
-        boton_2.hide();
-        boton_3.hide();
-        boton_4.show();
-        boton_5.hide();
-        boton_6.hide();
-        boton_7.hide();
-        boton_8.hide();
-        boton_9.hide();
-        boton_10.hide();
       }
       else if(slider.value()==5){
         image(nivel5,125,50,450,400);
-        boton_1.hide();
-        boton_2.hide();
-        boton_3.hide();
-        boton_4.hide();
-        boton_5.show();
-        boton_6.hide();
-        boton_7.hide();
-        boton_8.hide();
-        boton_9.hide();
-        boton_10.hide();
       }
       else if(slider.value()==6){
         image(nivel6,125,50,450,400);
-        boton_1.hide();
-        boton_2.hide();
-        boton_3.hide();
-        boton_4.hide();
-        boton_5.hide();
-        boton_6.show();
-        boton_7.hide();
-        boton_8.hide();
-        boton_9.hide();
-        boton_10.hide();
       }
       else if(slider.value()==7){
         image(nivel7,125,50,450,400);
-        boton_1.hide();
-        boton_2.hide();
-        boton_3.hide();
-        boton_4.hide();
-        boton_5.hide();
-        boton_6.hide();
-        boton_7.show();
-        boton_8.hide();
-        boton_9.hide();
-        boton_10.hide();
       }
       else if(slider.value()==8){
         image(nivel8,125,50,450,400);
-        boton_1.hide();
-        boton_2.hide();
-        boton_3.hide();
-        boton_4.hide();
-        boton_5.hide();
-        boton_6.hide();
-        boton_7.hide();
-        boton_8.show();
-        boton_9.hide();
-        boton_10.hide();
       }
       else if(slider.value()==9){
         image(nivel9,125,50,450,400);
-        boton_1.hide();
-        boton_2.hide();
-        boton_3.hide();
-        boton_4.hide();
-        boton_5.hide();
-        boton_6.hide();
-        boton_7.hide();
-        boton_8.hide();
-        boton_9.show();
-        boton_10.hide();
       }
       else if(slider.value()==10){
         image(nivel10,125,50,450,400);
-        boton_1.hide();
-        boton_2.hide();
-        boton_3.hide();
-        boton_4.hide();
-        boton_5.hide();
-        boton_6.hide();
-        boton_7.hide();
-        boton_8.hide();
-        boton_9.hide();
-        boton_10.show();
       }
 
     }
@@ -812,16 +551,7 @@ function draw() {
       board.limitetablero('player')
       slider.hide();
       boton_1.hide();
-      boton_2.hide();
-      boton_3.hide();
-      boton_4.hide();
-      boton_5.hide();
-      boton_6.hide();
-      boton_7.hide();
-      boton_8.hide();
-      boton_9.hide();
-      boton_10.hide();
-      button.hide();
+      button.show();
     }
     
   }
@@ -838,3 +568,16 @@ function draw() {
     button.mousePressed(recargarpagina);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
