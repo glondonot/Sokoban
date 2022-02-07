@@ -30,6 +30,12 @@ function preload() {
   // Musica tomada de https://www.youtube.com/watch?v=HRVWaK-izbo
   soundFormats('ogg', 'mp3');
   soundFile = loadSound('assets/musica.mp3');
+   //seccion que pone la cancion
+  if(cancion==false){
+    soundFile.setVolume(0.1)
+    soundFile.loop()
+    cancion=true;
+  }
 
 }
 //crea el menu que actua como una ventana emergente.
@@ -92,12 +98,6 @@ function jugarNiveln(){
 }
 //-----se establece el tamaño del canvas y se crea objeto tablero y almacen-----
 function setup() {
-  //seccion que pone la cancion
-  if(cancion==false){
-    soundFile.setVolume(0.1)
-    soundFile.loop()
-    cancion=true;
-  }
   imagenesancho=windowWidth/2.3;
   imageneslargo=windowHeight/2.3;
   h = windowHeight/10
