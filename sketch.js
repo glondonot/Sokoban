@@ -27,6 +27,7 @@ function preload() {
   nivel8=loadImage("assets/nivel5.png");
   nivel9=loadImage("assets/nivel6.png");
   nivel10=loadImage("assets/nivel10.png");
+  /*
   // Musica tomada de https://www.youtube.com/watch?v=HRVWaK-izbo
   soundFormats('ogg', 'mp3');
   soundFile = loadSound('assets/musica.mp3');
@@ -35,7 +36,7 @@ function preload() {
     soundFile.setVolume(0.1)
     soundFile.loop()
     cancion=true;
-  }
+  }*/
 
 }
 //crea el menu que actua como una ventana emergente.
